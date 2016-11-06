@@ -1,6 +1,2 @@
-//
-// Do any local configuration here
-//
-
 include "/etc/bind/zones.blacklist";
-include "/etc/bind/zones/custom.local";
+include "/etc/bind/zones.custom";

@@ -1,0 +1,2 @@
+config/zones/*
+!config/zones/zone.example
