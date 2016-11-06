@@ -1,0 +1,5 @@
+//
+// Do any local configuration here
+//
+
+// include "/etc/bind/zones/example.com.au.zone";
