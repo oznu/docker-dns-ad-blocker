@@ -2,17 +2,17 @@
 
 A simple BIND DNS server to block traffic to known ad servers.
 
-### Usage
+## Usage
 
 ```
 docker run -d -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 ```
 
-### AD Blocking
+## AD Blocking
 
 This image is using the blacklists created by [http://pgl.yoyo.org/as/](http://pgl.yoyo.org/as/). The blacklist is updated every time the container is started.
 
-### Optional :: Custom Domains
+## Optional :: Custom Domains
 
 This image supports adding additional zones that may be used to serve internal DNS zones or to override existing zones.
 
