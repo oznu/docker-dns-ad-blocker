@@ -12,4 +12,4 @@ EXPOSE 53
 VOLUME ["/etc/bind/zones"]
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-CMD ["/usr/sbin/named", "-g", "-d", "1"]
+CMD ["/usr/sbin/named", "-g", "-d", "0"]
