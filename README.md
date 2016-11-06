@@ -43,3 +43,5 @@ $TTL    86400   ; one day
 
 *       IN      A       10.0.0.100
 ```
+
+After adding a zone file you must restart the container for it to be loaded.
