@@ -22,7 +22,7 @@ To do this create a volume share when creating the container:
 docker run -d -p 53:53/tcp -p 53:53/udp -v /srv/zones:/etc/bind/zones oznu/dns-ad-blocker
 ```
 
-Every file in the ```/srv/zones``` should have the name of the zone you wish to add.
+Every file in the ```/srv/zones``` directory should have the name of the zone you wish to add.
 For example, if you were adding the zone ```example.com.au```, the file name should be named ```example.com.au```.
 
 The file contents should be a bind zone file, for example:
