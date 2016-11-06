@@ -7,6 +7,9 @@ RUN apt-get -y install dnsutils wget
 COPY ./config/ /etc/bind/
 COPY entrypoint.sh /sbin/entrypoint.sh
 
-ENTRYPOINT ["/sbin/entrypoint.sh"]
+EXPOSE 53
 
+VOLUME ["/etc/bind/zones"]
+
+ENTRYPOINT ["/sbin/entrypoint.sh"]
 CMD ["/usr/sbin/named", "-g", "-d", "1"]
