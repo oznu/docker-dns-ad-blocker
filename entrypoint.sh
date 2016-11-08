@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the blacklist of domains and fix the zone file path.
-wget "http://pgl.yoyo.org/as/serverlist.php?hostformat=bindconfig&showintro=0&mimetype=plaintext" -O /etc/bind/zones.blacklist
+wget "https://raw.githubusercontent.com/oznu/bind-zone-blacklist/master/zones.blacklist" -O /etc/bind/zones.blacklist
 sed -i  's/null.zone.file/\/etc\/bind\/null.zone.file/g' /etc/bind/zones.blacklist
 
 # Prepare the zones.custom file to by ensuring it is empty.

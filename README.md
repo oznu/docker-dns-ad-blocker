@@ -10,7 +10,7 @@ docker run -d -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 
 ## AD Blocking
 
-This image is using the blacklists created by [http://pgl.yoyo.org/as/](http://pgl.yoyo.org/as/). The blacklist is updated every time the container is started.
+This image is using the blacklists created by [oznu/bind-zone-blacklist](https://github.com/oznu/bind-zone-blacklist) and [StevenBlack/hosts](https://github.com/StevenBlack/hosts). The blacklist is updated every time the container is restarted.
 
 ## Optional :: Custom Domains
 
