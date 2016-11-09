@@ -11,4 +11,4 @@ VOLUME ["/etc/dnsmasq.d/"]
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]
 
-CMD ["dnsmasq", "--no-daemon", "--all-servers"]
+CMD ["dnsmasq", "--no-daemon"]
