@@ -1,2 +1,0 @@
-include "/etc/bind/zones.blacklist";
-include "/etc/bind/zones.custom";

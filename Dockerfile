@@ -1,15 +1,14 @@
-FROM ubuntu:16.04
+FROM alpine:3.4
+RUN apk --no-cache add dnsmasq wget
 
-RUN apt-get -y update
-RUN apt-get -y install bind9 bind9utils bind9-doc
-RUN apt-get -y install dnsutils wget
+EXPOSE 53 53/udp
 
-COPY ./config/ /etc/bind/
+RUN mkdir -p /etc/dnsmasq.d/
+COPY config/dnsmasq.conf /etc/dnsmasq.conf
 COPY entrypoint.sh /sbin/entrypoint.sh
 
-EXPOSE 53
-
-VOLUME ["/etc/bind/zones"]
+VOLUME ["/etc/dnsmasq.d/"]
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-CMD ["/usr/sbin/named", "-g", "-d", "0"]
+
+CMD ["dnsmasq", "--no-daemon", "--all-servers"]

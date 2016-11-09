@@ -1,6 +1,6 @@
 # oznu/dns-ad-blocker
 
-A simple BIND DNS server to block traffic to known ad servers.
+A simple, lightweight, Dnsmasq DNS server to block traffic to known ad servers.
 
 ## Usage
 
@@ -10,7 +10,7 @@ docker run -d -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 
 ## AD Blocking
 
-This image is using the blacklists created by [oznu/bind-zone-blacklist](https://github.com/oznu/bind-zone-blacklist) and [StevenBlack/hosts](https://github.com/StevenBlack/hosts). The blacklist is updated every time the container is restarted.
+This image is using the blacklists created by [oznu/dns-zone-blacklist](https://github.com/oznu/dns-zone-blacklist) and [StevenBlack/hosts](https://github.com/StevenBlack/hosts). The blacklist is updated every time the container is restarted.
 
 ## Optional :: Custom Domains
 
@@ -19,29 +19,22 @@ This image supports adding additional zones that may be used to serve internal D
 To do this create a volume share when creating the container:
 
 ```
-docker run -d -p 53:53/tcp -p 53:53/udp -v /srv/zones:/etc/bind/zones oznu/dns-ad-blocker
+docker run -d -p 53:53/tcp -p 53:53/udp -v /srv/zones:/etc/dnsmasq.d/ oznu/dns-ad-blocker
 ```
 
-Every file in the ```/srv/zones``` directory should have the name of the zone you wish to add.
-For example, if you were adding the zone ```example.com.au```, the file name should be named ```example.com.au```.
+Every file in the ```/srv/zones``` will be included as an extension to the Dnsmasq config.
 
-The file contents should be a bind zone file, for example:
+Example:
 
 ```
-$TTL    86400   ; one day
+# Add domains which you want to force to an IP address here.
+# The example below send any host in doubleclick.net to a local
+# webserver.
+address=/doubleclick.net/127.0.0.1
 
-@       IN      SOA     ns0.example.net.      hostmaster.example.net. (
-                        2002061000       ; serial number YYMMDDNN
-                        28800   ; refresh  8 hours
-                        7200    ; retry    2 hours
-                        864000  ; expire  10 days
-                        86400 ) ; min ttl  1 day
-                NS      ns0.example.net.
-                NS      ns1.example.net.
-
-                A       10.0.0.100
-
-*       IN      A       10.0.0.100
+# Return an MX record named "maildomain.com" with target
+# servermachine.com and preference 50
+mx-host=maildomain.com,servermachine.com,50
 ```
 
-After adding a zone file you must restart the container for it to be loaded.
+After adding or updating a zone config file you must restart the container for it to be loaded.

@@ -1,18 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 # Get the blacklist of domains and fix the zone file path.
-wget "https://raw.githubusercontent.com/oznu/bind-zone-blacklist/master/zones.blacklist" -O /etc/bind/zones.blacklist
-sed -i  's/null.zone.file/\/etc\/bind\/null.zone.file/g' /etc/bind/zones.blacklist
-
-# Prepare the zones.custom file to by ensuring it is empty.
-> /etc/bind/zones.custom
-
-# For each file in the /etc/bind/zones directory, create an entry in the /etc/bind/zones.custom file.
-cd /etc/bind/zones
-for zone in *; do
-  echo "Adding custom zone $zone..."
-  echo "zone \"$zone\" { type master; file \"/etc/bind/zones/$zone\"; };" >> /etc/bind/zones.custom
-done
-cd /etc/bind
+wget "https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq.blacklist" -O /etc/dnsmasq.blacklist --no-check-certificate
 
 exec "$@"
