@@ -1,5 +1,5 @@
 FROM alpine:3.4
-RUN apk --no-cache add dnsmasq wget
+RUN apk --no-cache add dnsmasq curl
 
 EXPOSE 53 53/udp
 
