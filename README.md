@@ -35,9 +35,28 @@ If you want the dns-ad-blocker container to start automatically after your machi
 docker run -d --restart=always -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 ```
 
+### Automatically Update the Blacklist
+
+To enable automatic updating of the blacklist set ```AUTO_UPDATE=1```. This should only be used on conjunction with a
+[restart policy](https://docs.docker.com/engine/reference/run/#restart-policies---restart) as the container is killed
+when an update is available to refresh Dnsmasq.
+
+```
+docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "AUTO_UPDATE=1" oznu/dns-ad-blocker
+```
+
+When auto update is enable the container will check to see if new updates are available every hour by downloading a
+sha256 checksum of the remote blacklist and comparing it to the current blacklist. If a new version is detected the container
+will download the new copy and restart itself.
+
 ## AD Blocking
 
-This image is using the blacklists created by [oznu/dns-zone-blacklist](https://github.com/oznu/dns-zone-blacklist) and [StevenBlack/hosts](https://github.com/StevenBlack/hosts). The blacklist is updated every time the container is restarted.
+This image is using the blacklists created by [oznu/dns-zone-blacklist](https://github.com/oznu/dns-zone-blacklist) and [StevenBlack/hosts](https://github.com/StevenBlack/hosts).
+
+The DNS server works by returning ```0.0.0.0``` when a DNS lookup is made by a browser or device to a blacklisted domain. ```0.0.0.0``` is defined as a non-routable meta-address used to designate an invalid, unknown, or non applicable target which results in the browser rejecting the request.
+
+If you have found a host you think should be blacklisted please submit an issue on the upstream blacklist, [StevenBlack/hosts](https://github.com/StevenBlack/hosts/issues), as
+the aim of this project is not to maintain yet another blacklist.
 
 ## Optional :: Custom Domains
 

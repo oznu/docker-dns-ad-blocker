@@ -18,7 +18,24 @@ else
   sed -i "s/.*log-queries/#log-queries/" /etc/dnsmasq.conf
 fi
 
-# Get the blacklist of domains and fix the zone file path.
-curl -k -o /etc/dnsmasq.blacklist "https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq.blacklist"
+# Download the checksum on the remote release
+CHECKSUM=$(curl -k "https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq.blacklist.checksum")
+
+# Compare the remote checksum to the existing local file
+echo "${CHECKSUM}  /etc/dnsmasq.blacklist" | sha256sum -c -
+
+if [[ $? != 0 ]] ; then
+  echo "Blacklist is missing or out of date, downloading update..."
+  # Get the blacklist of domains and fix the zone file path.
+  curl -k -o /etc/dnsmasq.blacklist "https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq.blacklist"
+fi
+
+# Enable/Disable Auto Update Mode
+if [[ "$AUTO_UPDATE" -eq "1" ]]; then
+  echo "0	*	*	*	*	/sbin/update.sh" > /var/spool/cron/crontabs/root
+  /usr/sbin/crond -b
+else
+  > /var/spool/cron/crontabs/root
+fi
 
 exec "$@"
