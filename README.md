@@ -9,7 +9,7 @@ docker run -d -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 ```
 
 You can now set your devices to use the Docker Host's IP Address as the primary DNS resolver,
-if you are using [Docker Toolbox](https://www.docker.com/products/docker-toolbox) on OSX or Windows this will be 127.0.0.1.
+if you are using [Docker for Windows](https://docs.docker.com/docker-for-windows/) or [Docker for Mac](https://docs.docker.com/docker-for-mac/) this will be 127.0.0.1.
 
 ### Log Queries
 
