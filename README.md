@@ -5,49 +5,35 @@ A simple, lightweight, Dnsmasq DNS server to block traffic to known ad servers.
 ## Usage
 
 ```
-docker run -d -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
+docker run -d --restart=always -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 ```
 
 You can now set your devices to use the Docker Host's IP Address as the primary DNS resolver,
 if you are using [Docker for Windows](https://docs.docker.com/docker-for-windows/) or [Docker for Mac](https://docs.docker.com/docker-for-mac/) this will be 127.0.0.1.
 
-### Log Queries
+Automatic blacklist updates are enabled by default. This should only be used on conjunction with a
+[restart policy](https://docs.docker.com/engine/reference/run/#restart-policies---restart) as the container is killed
+when an update is available to refresh Dnsmasq.
 
-To enable logging of DNS queries set ```DEBUG=1```
+### Options
+
+To enable logging of DNS queries set ```DEBUG=1```:
 
 ```
-docker run -d -p 53:53/tcp -p 53:53/udp -e "DEBUG=1" oznu/dns-ad-blocker
+docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "DEBUG=1" oznu/dns-ad-blocker
 ```
-
-### Set Forward Lookup Resolvers
 
 By default this image forwards DNS requests for unknown zones to Google's DNS servers, 8.8.8.8 and 8.8.4.4. You can set your own if required:
 
 ```
-docker run -d -p 53:53/tcp -p 53:53/udp -e "NS1=192.168.0.1" -e "NS2=192.168.0.2" oznu/dns-ad-blocker
+docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "NS1=192.168.0.1" -e "NS2=192.168.0.2" oznu/dns-ad-blocker
 ```
 
-### Restart Automatically
-
-If you want the dns-ad-blocker container to start automatically after your machine reboots add a [restart policy](https://docs.docker.com/engine/reference/run/#restart-policies---restart) to the container:
+To disable automatic updates set ```AUTO_UPDATE=0```:
 
 ```
-docker run -d --restart=always -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
+docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "AUTO_UPDATE=0" oznu/dns-ad-blocker
 ```
-
-### Automatically Update the Blacklist
-
-To enable automatic updating of the blacklist set ```AUTO_UPDATE=1```. This should only be used on conjunction with a
-[restart policy](https://docs.docker.com/engine/reference/run/#restart-policies---restart) as the container is killed
-when an update is available to refresh Dnsmasq.
-
-```
-docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "AUTO_UPDATE=1" oznu/dns-ad-blocker
-```
-
-When auto update is enable the container will check to see if new updates are available every hour by downloading a
-sha256 checksum of the remote blacklist and comparing it to the current blacklist. If a new version is detected the container
-will download the new copy and restart itself.
 
 ## AD Blocking
 

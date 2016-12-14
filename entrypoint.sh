@@ -31,6 +31,8 @@ if [[ $? != 0 ]] ; then
 fi
 
 # Enable/Disable Auto Update Mode
+AUTO_UPDATE="${AUTO_UPDATE:-1}"
+
 if [[ "$AUTO_UPDATE" -eq "1" ]]; then
   echo "0	*	*	*	*	/sbin/update.sh" > /var/spool/cron/crontabs/root
   /usr/sbin/crond -b
