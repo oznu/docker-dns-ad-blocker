@@ -23,6 +23,9 @@ To enable logging of DNS queries set ```DEBUG=1```:
 docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "DEBUG=1" oznu/dns-ad-blocker
 ```
 
+For verbose logging (including source IP) set ```DEBUG=2```.
+
+
 By default this image forwards DNS requests for unknown zones to Google's DNS servers, 8.8.8.8 and 8.8.4.4. You can set your own if required:
 
 ```

@@ -13,9 +13,11 @@ echo "nameserver $NS2" >> /etc/resolv.conf
 
 # Enable/Disable Debug Mode
 if [[ "$DEBUG" -eq "1" ]]; then
-  sed -i "s/.*log-queries/log-queries/" /etc/dnsmasq.conf
+  sed -i "s/.*log-queries.*/log-queries/" /etc/dnsmasq.conf
+elif [[ "$DEBUG" -eq "2" ]]; then
+  sed -i "s/.*log-queries.*/log-queries=extra/" /etc/dnsmasq.conf
 else
-  sed -i "s/.*log-queries/#log-queries/" /etc/dnsmasq.conf
+  sed -i "s/.*log-queries.*/#log-queries/" /etc/dnsmasq.conf
 fi
 
 # Download the checksum on the remote release
