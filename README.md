@@ -19,8 +19,6 @@ when an update is available to refresh Dnsmasq.
 
 ## Parameters
 
-The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
-
 ```shell
 docker run -d --restart=always
   -p 53:53/tcp -p 53:53/udp
@@ -31,6 +29,8 @@ docker run -d --restart=always
   -v </path/to/config>:/etc/dnsmasq.d/
   oznu/dns-ad-blocker
 ```
+
+The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
 
 * ```--restart=always``` - ensure the container restarts automatically after an update, **required**.
 * ```-p 53:53/tcp -p 53:53/udp``` - expose port 53 on TCP and UDP to the host, **required**.
