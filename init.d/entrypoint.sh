@@ -40,7 +40,7 @@ fi
 AUTO_UPDATE="${AUTO_UPDATE:-1}"
 
 if [[ "$AUTO_UPDATE" -eq "1" ]]; then
-  echo "0	*	*	*	*	/sbin/update.sh" > /var/spool/cron/crontabs/root
+  echo "0	*	*	*	*	/init.d/update.sh" > /var/spool/cron/crontabs/root
   /usr/sbin/crond -b
 else
   > /var/spool/cron/crontabs/root
