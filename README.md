@@ -4,6 +4,8 @@ A simple, lightweight, Dnsmasq DNS server to block traffic to known ad servers.
 
 ## Usage
 
+Quick Setup:
+
 ```
 docker run -d --restart=always -p 53:53/tcp -p 53:53/udp oznu/dns-ad-blocker
 ```
@@ -15,28 +17,28 @@ Automatic blacklist updates are enabled by default. This should only be used on 
 [restart policy](https://docs.docker.com/engine/reference/run/#restart-policies---restart) as the container is killed
 when an update is available to refresh Dnsmasq.
 
-### Options
+## Parameters
 
-To enable logging of DNS queries set ```DEBUG=1```:
+The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
 
-```
-docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "DEBUG=1" oznu/dns-ad-blocker
-```
-
-For verbose logging (including source IP) set ```DEBUG=2```.
-
-
-By default this image forwards DNS requests for unknown zones to Google's DNS servers, 8.8.8.8 and 8.8.4.4. You can set your own if required:
-
-```
-docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "NS1=192.168.0.1" -e "NS2=192.168.0.2" oznu/dns-ad-blocker
+```shell
+docker run -d --restart=always
+  -p 53:53/tcp -p 53:53/udp
+  -e "DEBUG=0"
+  -e "NS1=8.8.8.8" -e "NS2=8.8.4.4"
+  -e "AUTO_UPDATE=1"
+  -e "BRANCH=master"
+  -v /srv/zones:/etc/dnsmasq.d/
+  oznu/dns-ad-blocker
 ```
 
-To disable automatic updates set ```AUTO_UPDATE=0```:
-
-```
-docker run -d --restart=always -p 53:53/tcp -p 53:53/udp -e "AUTO_UPDATE=0" oznu/dns-ad-blocker
-```
+* ```--restart=always``` ensure the container restarts automatically after an update, **required**.
+* ```-p 53:53/tcp -p 53:53/udp``` expose port 53 on TCP and UDP to the host, **required**.
+* ```-e "DEBUG=0"``` enables debug mode if set to ```DEBUG=1```. For verbose logging (including source IP) set ```DEBUG=2```.
+* ```-e "NS1=8.8.8.8" -e "NS2=8.8.4.4"``` override the default forward lookup servers. By default these are set to Google's DNS servers.
+* ```-e "AUTO_UPDATE=1"``` to disable automatic updates to the blacklist set ```AUTO_UPDATE=0```. Automatic updates are enabled by default.
+* ```-e "BRANCH=master"``` set the branch or commit to use for the blacklist. Defaults to master.
+* ```-v /srv/zones:/etc/dnsmasq.d/``` any files included in the mounted volume will be included in the Dnsmasq config. See below.
 
 ## AD Blocking
 
