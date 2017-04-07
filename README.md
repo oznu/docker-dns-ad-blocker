@@ -1,5 +1,6 @@
 [![Docker Automated buil](https://img.shields.io/docker/automated/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
+[![](https://images.microbadger.com/badges/image/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
 
 # oznu/dns-ad-blocker
 
