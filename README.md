@@ -1,3 +1,6 @@
+[![Docker Automated buil](https://img.shields.io/docker/automated/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
+
 # oznu/dns-ad-blocker
 
 A simple, lightweight, Dnsmasq DNS server to block traffic to known ad servers.
