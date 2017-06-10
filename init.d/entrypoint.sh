@@ -15,6 +15,10 @@ echo "nameserver $NS2" >> /etc/resolv.conf
 BRANCH="${BRANCH:-master}"
 echo "Setting blacklist branch to '$BRANCH'..."
 
+# Set default URL
+BLACKLIST_URL="${BLACKLIST_URL:-https://raw.githubusercontent.com/oznu/dns-zone-blacklist/$BRANCH/dnsmasq/dnsmasq.blacklist}"
+echo "Setting Blacklist URL to: $BLACKLIST_URL"
+
 # Enable/Disable Debug Mode
 if [[ "$DEBUG" -eq "1" ]]; then
   sed -i "s/.*log-queries.*/log-queries/" /etc/dnsmasq.conf
@@ -25,7 +29,7 @@ else
 fi
 
 # Download the checksum on the remote release
-CHECKSUM=$(curl -k "https://raw.githubusercontent.com/oznu/dns-zone-blacklist/$BRANCH/dnsmasq/dnsmasq.blacklist")
+CHECKSUM=$(curl -k "$BLACKLIST_URL.checksum")
 
 # Compare the remote checksum to the existing local file
 echo "${CHECKSUM}  /etc/dnsmasq.blacklist" | sha256sum -c -
@@ -33,7 +37,7 @@ echo "${CHECKSUM}  /etc/dnsmasq.blacklist" | sha256sum -c -
 if [[ $? != 0 ]] ; then
   echo "Blacklist is missing or out of date, downloading update..."
   # Get the blacklist of domains and fix the zone file path.
-  curl -k -o /etc/dnsmasq.blacklist "https://raw.githubusercontent.com/oznu/dns-zone-blacklist/$BRANCH/dnsmasq/dnsmasq.blacklist"
+  curl -k -o /etc/dnsmasq.blacklist "$BLACKLIST_URL"
 fi
 
 # Enable/Disable Auto Update Mode
