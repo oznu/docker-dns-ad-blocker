@@ -39,14 +39,14 @@ The parameters are split into two halves, separated by a colon, the left hand si
 * ```-e DEBUG``` - enables debug mode if set to ```DEBUG=1```. For verbose logging (including source IP) set ```DEBUG=2```.
 * ```-e NS1 -e NS2``` - override the default forward lookup servers. By default these are set to Google's DNS servers.
 * ```-e AUTO_UPDATE``` - to disable automatic updates to the blacklist set ```AUTO_UPDATE=0```. Automatic updates are enabled by default.
-* ```-e BRANCH``` - set the branch or commit to use for the blacklist. Defaults to master.
+* ```-e BRANCH``` - set the branch or commit to use for the blacklist. Useful if you want to lock the blacklist. Defaults to master.
 * ```-v /etc/dnsmasq.d/``` - any files included in the mounted volume will be included in the Dnsmasq config. See below.
 
 ## AD Blocking
 
 This image is using the blacklists created by [oznu/dns-zone-blacklist](https://github.com/oznu/dns-zone-blacklist) and [StevenBlack/hosts](https://github.com/StevenBlack/hosts).
 
-The DNS server works by returning ```0.0.0.0``` when a DNS lookup is made by a browser or device to a blacklisted domain. ```0.0.0.0``` is defined as a non-routable meta-address used to designate an invalid, unknown, or non applicable target which results in the browser rejecting the request.
+The DNS server works by returning ```NXDOMAIN``` when a DNS lookup is made by a browser or device to a blacklisted domain. This tells the browser the DNS record for domain name could not be found which means the browser won't even attempt a connection.
 
 If you have found a host you think should be blacklisted please submit an issue on the upstream blacklist, [StevenBlack/hosts](https://github.com/StevenBlack/hosts/issues), as
 the aim of this project is not to maintain yet another blacklist.
