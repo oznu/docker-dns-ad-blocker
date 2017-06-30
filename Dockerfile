@@ -1,25 +1,12 @@
-FROM alpine:3.6
-RUN apk --no-cache add tzdata dnsmasq curl
+FROM oznu/s6-alpine
 
-RUN mkdir -p /etc/dnsmasq.d/ \
-  && mkdir /init.d \
-  && touch /etc/dnsmasq.blacklist
+RUN apk --no-cache add dnsmasq curl
 
-COPY config/dnsmasq.conf /etc/dnsmasq.conf
-COPY init.d/ /init.d
+COPY root /
 
-VOLUME ["/etc/dnsmasq.d/"]
+VOLUME ["/config"]
 
 EXPOSE 53 53/udp
 
-ENTRYPOINT ["/init.d/entrypoint.sh"]
-
-ENV BRANCH=master
-ENV BLACKLIST_URL https://raw.githubusercontent.com/oznu/dns-zone-blacklist/${BRANCH}/dnsmasq/dnsmasq-server.blacklist
-
-ENV NS1=8.8.8.8 \
-  NS2=8.8.4.4 \
-  DEBUG=0 \
-  AUTO_UPDATE=1
-
-CMD ["dnsmasq", "--no-daemon"]
+ENV NS1=8.8.8.8 NS2=8.8.4.4 DEBUG=0 AUTO_UPDATE=1 \
+  BLACKLIST_URL=https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq-server.blacklist
