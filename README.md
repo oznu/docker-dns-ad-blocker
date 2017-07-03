@@ -73,3 +73,5 @@ docker run  -d --restart=always -p 53:53/tcp -p 53:53/udp -e DNSCRYPT=1 oznu/dns
 * ```-e DNSCRYPT_PROVIDER_KEY``` - the DNSCrypt provider public key. Defaults to OpenDNS.
 
 **Enabling DNSCrypt will override the ```NS1``` and ```NS2``` forward lookup server options.**
+
+See [offical list of DNSCrypt resolvers](https://github.com/jedisct1/dnscrypt-proxy/blob/master/dnscrypt-resolvers.csv) for alternative providers if you don't want to use OpenDNS.
