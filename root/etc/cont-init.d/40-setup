@@ -1,16 +1,43 @@
 #!/usr/bin/with-contenv sh
 
-echo "Blacklist URL: $BLACKLIST_URL"
-echo "Forward Name Servers: $NS1, $NS2"
-echo "Debug Level: $DEBUG"
-echo "Auto Update: $AUTO_UPDATE"
-
-sed -i "s/server=.* # NS1.*/server=$NS1 # NS1/" /etc/dnsmasq.conf
-sed -i "s/server=.* # NS2.*/server=$NS2 # NS2/" /etc/dnsmasq.conf
-
 # Set the containers name servers - so it can download the blacklist even if the host is using this container as DNS.
 echo "nameserver $NS1" > /etc/resolv.conf
 echo "nameserver $NS2" >> /etc/resolv.conf
+
+echo
+echo "-------------------------------------"
+echo "BLACKLIST URL: $BLACKLIST_URL"
+
+# Enable/Disable DNSCrypt
+if [[ "$DNSCRYPT" -eq "1" ]]; then
+  echo "DNSCRYPT: Enabled"
+  echo "DNSCRYPT RESOLVER ADDRESS: $DNSCRYPT_RESOLVER_ADDR"
+  echo "DNSCRYPT PROVIDER NAME: $DNSCRYPT_PROVIDER_NAME"
+  echo "DNSCRYPT PROVIDER KEY: $DNSCRYPT_PROVIDER_KEY"
+
+  sed -i "s/server=.* # NS1.*/server=127.0.0.1#40 # NS1/" /etc/dnsmasq.conf
+  sed -i "s/server=.* # NS2.*/server=127.0.0.1#40 # NS2/" /etc/dnsmasq.conf
+
+  sed -i "s/ResolverAddress .*/ResolverAddress $DNSCRYPT_RESOLVER_ADDR/" /etc/dnscrypt-proxy.conf
+  sed -i "s/ProviderName .*/ProviderName $DNSCRYPT_PROVIDER_NAME/" /etc/dnscrypt-proxy.conf
+  sed -i "s/ProviderKey .*/ProviderKey $DNSCRYPT_PROVIDER_KEY/" /etc/dnscrypt-proxy.conf
+
+  # Allow the dnscrypt-proxy to start
+  [ -d /etc/services.d/.dnscrypt-proxy ] && mv /etc/services.d/.dnscrypt-proxy /etc/services.d/dnscrypt-proxy
+else
+  echo "FORWARD NAME SERVERS: $NS1, $NS2"
+
+  sed -i "s/server=.* # NS1.*/server=$NS1 # NS1/" /etc/dnsmasq.conf
+  sed -i "s/server=.* # NS2.*/server=$NS2 # NS2/" /etc/dnsmasq.conf
+
+  # Stop the dnscrypt-proxy starting
+  [ -d /etc/services.d/dnscrypt-proxy ] && mv /etc/services.d/dnscrypt-proxy /etc/services.d/.dnscrypt-proxy
+fi
+
+echo "DEBUG LEVEL: $DEBUG"
+echo "AUTO UPDATE: $AUTO_UPDATE"
+echo "-------------------------------------"
+echo
 
 # Enable/Disable Debug Mode
 if [[ "$DEBUG" -eq "1" ]]; then
@@ -24,6 +51,10 @@ fi
 # Enable/Disable Auto Update Mode
 if [[ "$AUTO_UPDATE" -eq "1" ]]; then
   echo "0	*	*	*	*	/etc/cont-init.d/50-update-blacklist" > /var/spool/cron/crontabs/root
+  # Allow the cron service to start
+  [ -d /etc/services.d/.crond ] && mv /etc/services.d/.crond /etc/services.d/crond
 else
   > /var/spool/cron/crontabs/root
+  # Stop the cron service starting
+  [ -d /etc/services.d/crond ] && mv /etc/services.d/crond /etc/services.d/.crond
 fi
