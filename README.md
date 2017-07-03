@@ -67,7 +67,7 @@ This image allows you to enable [DNSCrypt](https://dnscrypt.org/) for your entir
 docker run  -d --restart=always -p 53:53/tcp -p 53:53/udp -e DNSCRYPT=1 oznu/dns-ad-blocker
 ```
 
-* ```-e DNSCRYPT``` - To enable DNSCrypt set ```DNSCRYPT=1```.
+* ```-e DNSCRYPT``` - To enable DNSCrypt set ```DNSCRYPT=1```. Disabled by default.
 * ```-e DNSCRYPT_RESOLVER_ADDR``` - the DNSCrypt-capable resolver IP address with an optional port. Defaults to OpenDNS (208.67.220.220:443).
 * ```-e DNSCRYPT_PROVIDER_NAME``` -  the fully-qualified name of the DNSCrypt certificate provider. Defaults to OpenDNS (2.dnscrypt-cert.opendns.com).
 * ```-e DNSCRYPT_PROVIDER_KEY``` - the DNSCrypt provider public key. Defaults to OpenDNS.
