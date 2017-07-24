@@ -39,6 +39,17 @@ echo "AUTO UPDATE: $AUTO_UPDATE"
 echo "-------------------------------------"
 echo
 
+# Add domains to the whitelist
+if [[ ! -z "$WHITELIST" ]]; then
+  > /etc/dnsmasq.whitelist
+  [[ "$DNSCRYPT" -eq "1" ]] && NS1="127.0.0.1#40" NS2="127.0.0.1#40"
+  for job in $(echo "$WHITELIST" | tr "," " "); do
+    echo "server=/$job/$NS1" >> /etc/dnsmasq.whitelist
+    echo "server=/$job/$NS2" >> /etc/dnsmasq.whitelist
+    echo "Added domain to whitelist: $job"
+  done
+fi
+
 # Enable/Disable Debug Mode
 if [[ "$DEBUG" -eq "1" ]]; then
   sed -i "s/.*log-queries.*/log-queries/" /etc/dnsmasq.conf

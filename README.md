@@ -38,13 +38,14 @@ docker run --restart=always \
 
 The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
 
-* ```--restart=always``` - ensure the container restarts automatically after host reboot.
-* ```-p 53:53/tcp -p 53:53/udp``` - expose port 53 on TCP and UDP to the host, **required**.
-* ```-e DEBUG``` - enables debug mode if set to ```DEBUG=1```. For verbose logging (including source IP) set ```DEBUG=2```.
-* ```-e NS1 -e NS2``` - override the default forward lookup servers. Defaults to Google's DNS servers (8.8.8.8, 8.8.4.4).
-* ```-e AUTO_UPDATE``` - to disable automatic updates to the blacklist set ```AUTO_UPDATE=0```. Automatic updates are enabled by default.
-* ```-e BLACKLIST_URL``` - the url where the blacklist should be downloaded from, useful if you want to lock the blacklist to a specific branch.
-* ```-v /config``` - any files included in the mounted volume will be included in the dnsmasq config.
+* `--restart=always` - ensure the container restarts automatically after host reboot.
+* `-p 53:53/tcp -p 53:53/udp` - expose port 53 on TCP and UDP to the host, **required**.
+* `-e DEBUG` - enables debug mode if set to `-e DEBUG=1`. For verbose logging (including source IP) set `-e DEBUG=2`.
+* `-e NS1 -e NS2` - override the default forward lookup servers. Defaults to Google's DNS servers (8.8.8.8, 8.8.4.4).
+* `-e AUTO_UPDATE` - to disable automatic updates to the blacklist set `-e AUTO_UPDATE=0`. Automatic updates are enabled by default.
+* `-e BLACKLIST_URL` - the url where the blacklist should be downloaded from, useful if you want to lock the blacklist to a specific branch.
+* `-e WHITELIST` - a list of domains to exclude from the blacklist (comma separated, no spaces) eg. `-e WHITELIST=www.oz.nu,hub.docker.com`
+* `-v /config` - any files included in the mounted volume will be included in the dnsmasq config.
 
 ## AD Blocking
 
