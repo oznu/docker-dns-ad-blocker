@@ -45,7 +45,7 @@ The parameters are split into two halves, separated by a colon, the left hand si
 * `-e AUTO_UPDATE` - to disable automatic updates to the blacklist set `-e AUTO_UPDATE=0`. Automatic updates are enabled by default.
 * `-e BLACKLIST_URL` - the url where the blacklist should be downloaded from, useful if you want to lock the blacklist to a specific branch.
 * `-e WHITELIST` - a list of domains to exclude from the blacklist (comma separated, no spaces) eg. `-e WHITELIST=www.oz.nu,hub.docker.com`
-* `-v /config` - any files included in the mounted volume will be included in the dnsmasq config.
+* `-v /config` - any files with the `.conf` suffix included in the mounted volume will be included in the dnsmasq config.
 
 ## AD Blocking
 
