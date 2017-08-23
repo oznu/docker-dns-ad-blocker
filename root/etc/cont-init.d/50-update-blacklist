@@ -9,21 +9,21 @@ echo "${CHECKSUM}  /etc/dnsmasq.blacklist" | sha256sum -c -
 if [[ $? != 0 ]] ; then
   echo "Blacklist is missing or out of date, downloading update..."
   # Get the blacklist of domains and fix the zone file path.
-  curl -sko /etc/dnsmasq.blacklist.tmp "$BLACKLIST_URL"
+  curl -sko /tmp/dnsmasq.blacklist "$BLACKLIST_URL"
 
   # Test the blacklist is valid
-  dnsmasq --test --conf-file=/etc/dnsmasq.blacklist.tmp
+  dnsmasq --test --conf-file=/tmp/dnsmasq.blacklist
 
   if [[ $? == 0 ]]; then
     # Downloaded blacklist is valid
-    mv /etc/dnsmasq.blacklist.tmp /etc/dnsmasq.blacklist
+    mv /tmp/dnsmasq.blacklist /etc/dnsmasq.blacklist
 
     # Kill any instances of dnsmasq
     # s6-supervisor will bring this back up if this script is being executed by crontab
     pkill dnsmasq
   else
     # Downloaded blacklist is not valid
-    rm -rf /etc/dnsmasq.blacklist.tmp
+    rm -rf /tmp/dnsmasq.blacklist
     echo >&2 "ERROR: Upstream blacklist did not pass dnsmasq config test."
   fi
 
