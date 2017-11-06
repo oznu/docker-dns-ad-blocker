@@ -1,0 +1,12 @@
+image: oznu/dns-ad-blocker:latest
+manifests:
+  -
+    image: oznu/dns-ad-blocker:latest
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: oznu/dns-ad-blocker:armhf
+    platform:
+      architecture: arm
+      os: linux
