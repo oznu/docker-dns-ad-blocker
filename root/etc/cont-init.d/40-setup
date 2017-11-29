@@ -8,8 +8,8 @@ echo
 echo "-------------------------------------"
 echo "BLACKLIST URL: $BLACKLIST_URL"
 
-# Enable/Disable DNSCrypt
-if [[ "$DNSCRYPT" -eq "1" ]]; then
+# Enable/Disable DNSCrypt - Default = OFF
+if [ "$DNSCRYPT" = "1" ]; then
   echo "DNSCRYPT: Enabled"
   echo "DNSCRYPT RESOLVER ADDRESS: $DNSCRYPT_RESOLVER_ADDR"
   echo "DNSCRYPT PROVIDER NAME: $DNSCRYPT_PROVIDER_NAME"
@@ -42,7 +42,7 @@ echo
 # Add domains to the whitelist
 if [[ ! -z "$WHITELIST" ]]; then
   > /etc/dnsmasq.whitelist
-  [[ "$DNSCRYPT" -eq "1" ]] && NS1="127.0.0.1#40" NS2="127.0.0.1#40"
+  [ "$DNSCRYPT" = "1" ] && NS1="127.0.0.1#40" NS2="127.0.0.1#40"
   for job in $(echo "$WHITELIST" | tr "," " "); do
     echo "server=/$job/$NS1" >> /etc/dnsmasq.whitelist
     echo "server=/$job/$NS2" >> /etc/dnsmasq.whitelist
@@ -50,17 +50,17 @@ if [[ ! -z "$WHITELIST" ]]; then
   done
 fi
 
-# Enable/Disable Debug Mode
-if [[ "$DEBUG" -eq "1" ]]; then
+# Enable/Disable Debug Mode - Default = OFF
+if [ "$DEBUG" = "1" ]; then
   sed -i "s/.*log-queries.*/log-queries/" /etc/dnsmasq.conf
-elif [[ "$DEBUG" -eq "2" ]]; then
+elif [ "$DEBUG" = "2" ]; then
   sed -i "s/.*log-queries.*/log-queries=extra/" /etc/dnsmasq.conf
 else
   sed -i "s/.*log-queries.*/#log-queries/" /etc/dnsmasq.conf
 fi
 
-# Enable/Disable Auto Update Mode
-if [[ "$AUTO_UPDATE" -eq "1" ]]; then
+# Enable/Disable Auto Update Mode - Default = ON
+if [ "$AUTO_UPDATE" = "1" ]; then
   echo "0	*	*	*	*	/etc/cont-init.d/50-update-blacklist" > /var/spool/cron/crontabs/root
   # Allow the cron service to start
   [ -d /etc/services.d/.crond ] && mv /etc/services.d/.crond /etc/services.d/crond
@@ -68,4 +68,13 @@ else
   > /var/spool/cron/crontabs/root
   # Stop the cron service starting
   [ -d /etc/services.d/crond ] && mv /etc/services.d/crond /etc/services.d/.crond
+fi
+
+# Enable/Disable Socks Proxy - Default = OFF
+if [ "$SOCKS" = "1" ]; then
+  # Allow the socks proxy service to start
+  [ -d /etc/services.d/.socks ] && mv /etc/services.d/.socks /etc/services.d/socks
+else
+  # Stop the socks proxy service starting
+  [ -d /etc/services.d/socks ] && mv /etc/services.d/socks /etc/services.d/.socks
 fi
