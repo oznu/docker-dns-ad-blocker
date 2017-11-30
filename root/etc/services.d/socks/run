@@ -1,4 +1,0 @@
-#!/usr/bin/with-contenv sh
-
-echo "Starting socks proxy..."
-s6-setuidgid abc socks -t

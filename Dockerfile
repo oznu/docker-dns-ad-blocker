@@ -3,7 +3,7 @@ FROM oznu/s6-alpine
 # Install dependencies and build dnscrypt-proxy (NOT enabled by default)
 RUN set -xe \
   && sed -i 's/edge\/community/edge\/testing/g' /etc/apk/repositories \
-  && apk add --no-cache dnsmasq curl libsodium-dev 3proxy \
+  && apk add --no-cache dnsmasq curl libsodium-dev \
   && apk add --no-cache --virtual .build-deps make g++ gcc python \
   && curl -fSLO --compressed "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.9.5/dnscrypt-proxy-1.9.5.tar.bz2" \
   && tar jxf "dnscrypt-proxy-1.9.5.tar.bz2" \
@@ -22,7 +22,6 @@ VOLUME ["/config"]
 EXPOSE 53 53/udp
 
 ENV NS1=8.8.8.8 NS2=8.8.4.4 DEBUG=0 AUTO_UPDATE=1 \
-  SOCKS=0 \
   DNSCRYPT=0 \
   DNSCRYPT_RESOLVER_ADDR=208.67.220.220:443 \
   DNSCRYPT_PROVIDER_NAME=2.dnscrypt-cert.opendns.com \

@@ -69,12 +69,3 @@ else
   # Stop the cron service starting
   [ -d /etc/services.d/crond ] && mv /etc/services.d/crond /etc/services.d/.crond
 fi
-
-# Enable/Disable Socks Proxy - Default = OFF
-if [ "$SOCKS" = "1" ]; then
-  # Allow the socks proxy service to start
-  [ -d /etc/services.d/.socks ] && mv /etc/services.d/.socks /etc/services.d/socks
-else
-  # Stop the socks proxy service starting
-  [ -d /etc/services.d/socks ] && mv /etc/services.d/socks /etc/services.d/.socks
-fi
