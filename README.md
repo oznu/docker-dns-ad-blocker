@@ -1,4 +1,4 @@
-[![Docker Automated buil](https://img.shields.io/docker/automated/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/) [![Docker Pulls](https://img.shields.io/docker/pulls/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/) [![](https://images.microbadger.com/badges/image/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
+[![Docker Build Status](https://img.shields.io/docker/build/oznu/dns-ad-blocker.svg?label=x64%20build&style=for-the-badge)](https://hub.docker.com/r/oznu/dns-ad-blocker/) [![Travis](https://img.shields.io/travis/oznu/docker-dns-ad-blocker.svg?label=arm%20build&style=for-the-badge)](https://travis-ci.org/oznu/docker-dns-ad-blocker) [![Docker Pulls](https://img.shields.io/docker/pulls/oznu/dns-ad-blocker.svg?style=for-the-badge)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
 
 # oznu/dns-ad-blocker
 
