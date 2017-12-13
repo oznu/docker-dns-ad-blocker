@@ -1,4 +1,4 @@
-FROM oznu/s6-alpine
+FROM oznu/s6-alpine:3.7
 
 # Install dependencies and build dnscrypt-proxy (NOT enabled by default)
 RUN set -xe \
