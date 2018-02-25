@@ -29,7 +29,7 @@ Automatic blacklist updates are enabled by default.
 docker run --restart=always \
   -p 53:53/tcp -p 53:53/udp \
   -e DEBUG=0 \
-  -e NS1=8.8.8.8 -e NS2=8.8.4.4 \
+  -e NS1=208.67.222.222 -e NS2=208.67.220.220 \
   -e AUTO_UPDATE=1 \
   -e BRANCH=master \
   -v </path/to/config>:/config \
@@ -41,7 +41,7 @@ The parameters are split into two halves, separated by a colon, the left hand si
 * `--restart=always` - ensure the container restarts automatically after host reboot.
 * `-p 53:53/tcp -p 53:53/udp` - expose port 53 on TCP and UDP to the host, **required**.
 * `-e DEBUG` - enables debug mode if set to `-e DEBUG=1`. For verbose logging (including source IP) set `-e DEBUG=2`.
-* `-e NS1 -e NS2` - override the default forward lookup servers. Defaults to Google's DNS servers (8.8.8.8, 8.8.4.4).
+* `-e NS1 -e NS2` - override the default forward lookup servers. Defaults to OpenDNS's DNS servers (208.67.222.222, 208.67.220.220).
 * `-e AUTO_UPDATE` - to disable automatic updates to the blacklist set `-e AUTO_UPDATE=0`. Automatic updates are enabled by default.
 * `-e BLACKLIST_URL` - the url where the blacklist should be downloaded from, useful if you want to lock the blacklist to a specific branch.
 * `-e WHITELIST` - a list of domains to exclude from the blacklist (comma separated, no spaces) eg. `-e WHITELIST=www.oz.nu,hub.docker.com`
