@@ -1,29 +1,30 @@
 FROM oznu/s6-alpine:3.7-armhf
 
-# Install dependencies and build dnscrypt-proxy (NOT enabled by default)
+ENV DEBUG=0 \
+  NS1=1.1.1.1 \
+  NS2=1.0.0.1 \
+  AUTO_UPDATE=1 \
+  BLACKLIST_URL=https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq-server.blacklist \
+  DNS_CRYPT_SERVERS=cloudflare,cloudflare-ipv6 \
+  DNSCRYPT_VERSION=2.0.8 
+
 RUN set -xe \
-  && sed -i 's/edge\/community/edge\/testing/g' /etc/apk/repositories \
-  && apk add --no-cache dnsmasq curl libsodium-dev \
-  && apk add --no-cache --virtual .build-deps make g++ gcc python \
-  && curl -fSLO --compressed "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.9.5/dnscrypt-proxy-1.9.5.tar.bz2" \
-  && tar jxf "dnscrypt-proxy-1.9.5.tar.bz2" \
-  && cd "dnscrypt-proxy-1.9.5" \
-  && ./configure --with-plugins \
-  && make -j$(getconf _NPROCESSORS_ONLN) \
-  && make install \
-  && cd .. \
-  && rm -rf "dnscrypt-proxy-1.9.5" "dnscrypt-proxy-1.9.5.tar.bz2" \
-  && apk del .build-deps
+  && apk add --no-cache dnsmasq curl
+
+# Install dnscrypt-proxy
+RUN case "${ARCH}" in \
+    amd64) PROXY_ARCH='i386';; \
+    armhf) PROXY_ARCH='arm';; \
+    aarch64) PROXY_ARCH='arm64';; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac \
+  && curl -fSLO "https://github.com/jedisct1/dnscrypt-proxy/releases/download/${DNSCRYPT_VERSION}/dnscrypt-proxy-linux_${PROXY_ARCH}-${DNSCRYPT_VERSION}.tar.gz" \
+  && tar -xzf dnscrypt-proxy-linux_${PROXY_ARCH}-${DNSCRYPT_VERSION}.tar.gz \
+  && mv linux-${PROXY_ARCH} /dnscrypt \
+  && rm -rf dnscrypt-proxy-linux_${PROXY_ARCH}-${DNSCRYPT_VERSION}.tar.gz
 
 COPY root /
 
 VOLUME ["/config"]
 
 EXPOSE 53 53/udp
-
-ENV NS1=8.8.8.8 NS2=8.8.4.4 DEBUG=0 AUTO_UPDATE=1 \
-  DNSCRYPT=0 \
-  DNSCRYPT_RESOLVER_ADDR=208.67.220.220:443 \
-  DNSCRYPT_PROVIDER_NAME=2.dnscrypt-cert.opendns.com \
-  DNSCRYPT_PROVIDER_KEY=B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79 \
-  BLACKLIST_URL=https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq-server.blacklist

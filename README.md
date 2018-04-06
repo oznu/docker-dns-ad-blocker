@@ -29,9 +29,10 @@ Automatic blacklist updates are enabled by default.
 docker run --restart=always \
   -p 53:53/tcp -p 53:53/udp \
   -e DEBUG=0 \
-  -e NS1=8.8.8.8 -e NS2=8.8.4.4 \
+  -e NS1=1.1.1.1 -e NS2=1.0.0.1 \
   -e AUTO_UPDATE=1 \
   -e BRANCH=master \
+  -e DNSCRYPT=0 \
   -v </path/to/config>:/config \
   oznu/dns-ad-blocker
 ```
@@ -41,10 +42,11 @@ The parameters are split into two halves, separated by a colon, the left hand si
 * `--restart=always` - ensure the container restarts automatically after host reboot.
 * `-p 53:53/tcp -p 53:53/udp` - expose port 53 on TCP and UDP to the host, **required**.
 * `-e DEBUG` - enables debug mode if set to `-e DEBUG=1`. For verbose logging (including source IP) set `-e DEBUG=2`.
-* `-e NS1 -e NS2` - override the default forward lookup servers. Defaults to Google's DNS servers (8.8.8.8, 8.8.4.4).
+* `-e NS1 -e NS2` - override the default forward lookup servers. Defaults to Cloudflares's DNS servers (1.1.1.1, 1.0.0.1).
 * `-e AUTO_UPDATE` - to disable automatic updates to the blacklist set `-e AUTO_UPDATE=0`. Automatic updates are enabled by default.
 * `-e BLACKLIST_URL` - the url where the blacklist should be downloaded from, useful if you want to lock the blacklist to a specific branch.
 * `-e WHITELIST` - a list of domains to exclude from the blacklist (comma separated, no spaces) eg. `-e WHITELIST=www.oz.nu,hub.docker.com`
+* `-e DNSCRYPT=1` - enable [DNSCrypt](https://dnscrypt.info/), disabled by default. See below for more details.
 * `-v /config` - any files with the `.conf` suffix included in the mounted volume will be included in the dnsmasq config.
 
 ## AD Blocking
@@ -69,10 +71,8 @@ docker run  -d --restart=always -p 53:53/tcp -p 53:53/udp -e DNSCRYPT=1 oznu/dns
 ```
 
 * ```-e DNSCRYPT``` - To enable DNSCrypt set ```DNSCRYPT=1```. Disabled by default.
-* ```-e DNSCRYPT_RESOLVER_ADDR``` - the DNSCrypt-capable resolver IP address with an optional port. Defaults to OpenDNS (208.67.220.220:443).
-* ```-e DNSCRYPT_PROVIDER_NAME``` -  the fully-qualified name of the DNSCrypt certificate provider. Defaults to OpenDNS (2.dnscrypt-cert.opendns.com).
-* ```-e DNSCRYPT_PROVIDER_KEY``` - the DNSCrypt provider public key. Defaults to OpenDNS.
+* ```-e DNS_CRYPT_SERVERS``` - a comma seperated (no spaces) list of servers to use. Defaults to `cloudflare,cloudflare-ipv6`.
 
 **Enabling DNSCrypt will override the ```NS1``` and ```NS2``` forward lookup server options.**
 
-See [offical list of DNSCrypt resolvers](https://github.com/jedisct1/dnscrypt-proxy/blob/master/dnscrypt-resolvers.csv) for alternative providers if you don't want to use OpenDNS.
+See [the offical list of DNSCrypt resolvers](https://dnscrypt.info/public-servers) for alternative providers if you don't want to use Cloudflare DNS.

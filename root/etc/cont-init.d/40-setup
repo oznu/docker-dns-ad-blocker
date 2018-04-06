@@ -11,16 +11,17 @@ echo "BLACKLIST URL: $BLACKLIST_URL"
 # Enable/Disable DNSCrypt - Default = OFF
 if [ "$DNSCRYPT" = "1" ]; then
   echo "DNSCRYPT: Enabled"
-  echo "DNSCRYPT RESOLVER ADDRESS: $DNSCRYPT_RESOLVER_ADDR"
-  echo "DNSCRYPT PROVIDER NAME: $DNSCRYPT_PROVIDER_NAME"
-  echo "DNSCRYPT PROVIDER KEY: $DNSCRYPT_PROVIDER_KEY"
+
+  if [ ! -z "$DNS_CRYPT_SERVERS" ]; then
+    for job in $(echo "$DNS_CRYPT_SERVERS" | tr "," " "); do
+      export _DNS_CRYPT_SERVERS="$_DNS_CRYPT_SERVERS'${job}', "
+    done
+
+    sed -i "s/server_names =.*/server_names = [$_DNS_CRYPT_SERVERS]/" /etc/dnscrypt-proxy.toml
+  fi
 
   sed -i "s/server=.* # NS1.*/server=127.0.0.1#40 # NS1/" /etc/dnsmasq.conf
   sed -i "s/server=.* # NS2.*/server=127.0.0.1#40 # NS2/" /etc/dnsmasq.conf
-
-  sed -i "s/ResolverAddress .*/ResolverAddress $DNSCRYPT_RESOLVER_ADDR/" /etc/dnscrypt-proxy.conf
-  sed -i "s/ProviderName .*/ProviderName $DNSCRYPT_PROVIDER_NAME/" /etc/dnscrypt-proxy.conf
-  sed -i "s/ProviderKey .*/ProviderKey $DNSCRYPT_PROVIDER_KEY/" /etc/dnscrypt-proxy.conf
 
   # Allow the dnscrypt-proxy to start
   [ -d /etc/services.d/.dnscrypt-proxy ] && mv /etc/services.d/.dnscrypt-proxy /etc/services.d/dnscrypt-proxy

@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv sh
 
 echo "Starting dnscrypt-proxy..."
-dnscrypt-proxy /etc/dnscrypt-proxy.conf
+/dnscrypt/dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
