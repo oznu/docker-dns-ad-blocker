@@ -40,7 +40,7 @@ echo "-------------------------------------"
 echo
 
 # Add domains to the whitelist
-if [[ ! -z "$WHITELIST" ]]; then
+if [ ! -z "$WHITELIST" ]; then
   > /etc/dnsmasq.whitelist
   [ "$DNSCRYPT" = "1" ] && NS1="127.0.0.1#40" NS2="127.0.0.1#40"
   for job in $(echo "$WHITELIST" | tr "," " "); do
