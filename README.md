@@ -1,8 +1,17 @@
-[![Docker Build Status](https://img.shields.io/docker/build/oznu/dns-ad-blocker.svg?label=x64%20build&style=for-the-badge)](https://hub.docker.com/r/oznu/dns-ad-blocker/) [![Travis](https://img.shields.io/travis/oznu/docker-dns-ad-blocker.svg?label=arm%20build&style=for-the-badge)](https://travis-ci.org/oznu/docker-dns-ad-blocker) [![Docker Pulls](https://img.shields.io/docker/pulls/oznu/dns-ad-blocker.svg?style=for-the-badge)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
+[![Travis](https://img.shields.io/travis/oznu/docker-dns-ad-blocker.svg)](https://travis-ci.org/oznu/docker-dns-ad-blocker) [![Docker Pulls](https://img.shields.io/docker/pulls/oznu/dns-ad-blocker.svg)](https://hub.docker.com/r/oznu/dns-ad-blocker/)
 
 # oznu/dns-ad-blocker
 
 A simple, lightweight, dnsmasq DNS server to block traffic to known ad servers.
+
+## Image Variants
+
+| Image Tag             | Architecture  | OS            | Size   |
+| :-------------------- | :-------------| :------------ | :----  |
+| latest                | x64           | Alpine Linux  | [![](https://images.microbadger.com/badges/image/oznu/dns-ad-blocker.svg)](https://microbadger.com/images/oznu/dns-ad-blocker) |
+| armhf          | arm32v6       | Alpine Linux  | [![](https://images.microbadger.com/badges/image/oznu/dns-ad-blocker:armhf.svg)](https://microbadger.com/images/oznu/dns-ad-blocker:armhf) |
+| aarch64         | arm64       | Alpine Linux  | [![](https://images.microbadger.com/badges/image/oznu/dns-ad-blocker:aarch64.svg)](https://microbadger.com/images/oznu/dns-ad-blocker:aarch64) |
+
 
 ## Usage
 
