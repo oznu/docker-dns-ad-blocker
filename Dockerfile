@@ -1,4 +1,5 @@
-FROM oznu/s6-alpine:3.7
+ARG S6_ARCH
+FROM oznu/s6-alpine:3.7r2-${S6_ARCH:-amd64}
 
 ENV DEBUG=0 \
   NS1=1.1.1.1 \
@@ -6,15 +7,15 @@ ENV DEBUG=0 \
   AUTO_UPDATE=1 \
   BLACKLIST_URL=https://raw.githubusercontent.com/oznu/dns-zone-blacklist/master/dnsmasq/dnsmasq-server.blacklist \
   DNS_CRYPT_SERVERS=cloudflare,cloudflare-ipv6 \
-  DNSCRYPT_VERSION=2.0.8 
+  DNSCRYPT_VERSION=2.0.14
 
 RUN set -xe \
   && apk add --no-cache dnsmasq curl
 
 # Install dnscrypt-proxy
-RUN case "${ARCH}" in \
-    amd64) PROXY_ARCH='i386';; \
-    armhf) PROXY_ARCH='arm';; \
+RUN case "${QEMU_ARCH}" in \
+    x86_64) PROXY_ARCH='i386';; \
+    arm) PROXY_ARCH='arm';; \
     aarch64) PROXY_ARCH='arm64';; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac \
