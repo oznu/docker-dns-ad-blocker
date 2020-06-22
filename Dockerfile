@@ -1,5 +1,5 @@
 ARG S6_ARCH
-FROM oznu/s6-alpine:3.7r2-${S6_ARCH:-amd64}
+FROM oznu/s6-alpine:3.12-${S6_ARCH:-amd64}
 
 ENV DEBUG=0 \
   NS1=1.1.1.1 \
